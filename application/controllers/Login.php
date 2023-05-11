@@ -6,15 +6,18 @@
 class Login extends CI_Controller
 {
 
-  public function __construct() {
+  public function __construct()
+  {
     parent::__construct();
   }
 
-  public function index() {
+  public function index()
+  {
     $this->load->view('login_view');
   }
 
-  public function aksi_login() {
+  public function aksi_login()
+  {
     $user = $this->all_model->get_where(
       array(
         'email'     => $this->input->post('email'),
@@ -40,13 +43,14 @@ class Login extends CI_Controller
 
       if ($user[0]->level == '0') {
         redirect('dashboard');
-      }else {
+      } else {
         redirect('home');
       }
     }
   }
 
-  public function logout() {
+  public function logout()
+  {
     $this->session->unset_userdata('user_id');
     $this->session->unset_userdata('nama');
     $this->session->unset_userdata('email');
@@ -62,5 +66,3 @@ class Login extends CI_Controller
     redirect('home');
   }
 }
-
- ?>
