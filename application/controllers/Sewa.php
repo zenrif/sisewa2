@@ -18,7 +18,8 @@ class Sewa extends CI_Controller {
     $this->load->view('sewa_view');
   }
 //
-   public function simpan_edit() {
+public function simpan_edit()
+  {
     $produk_id = $this->input->post('produk_id');
     $nama_produk = $this->input->post('nama_produk');
     $luastanah = $this->input->post('luastanah');
@@ -30,46 +31,46 @@ class Sewa extends CI_Controller {
     $deskripsi = $this->input->post('deskripsi');
 
     if (!empty($_FILES)) {
-      $config['upload_path']          = './uploads/';
-$config['allowed_types']        = 'pdf|jpg|png';
-$config['max_size']             = 100;
-$config['max_width']            = 1024;
-$config['max_height']           = 768;
+      $config['upload_path']          = '/upload';
+      $config['allowed_types']        = 'pdf|jpg|png';
+      $config['max_size']             = 100;
+      $config['max_width']            = 1024;
+      $config['max_height']           = 768;
       $config['encrypt_name']         = true;
       $this->load->library('upload', $config);
-        if ( ! $this->upload->do_upload('suratpermohonan')) {
-          $error = array('error' => $this->upload->display_errors());
-          print_r($error);
-        } else {
-          $data = array('upload_data' => $this->upload->data());
-          $filename = $data['upload_data']['file_name'];
-          $data_update = array(
-            'kategori_id' => $kategori,
-            'nama_produk' => $nama_produk,
-            'luastanah' => $luastanah,
-            'luasbangunan' => $luasbangunan,
-            'alamatp' => $alamatp,
-            'harga'       => $harga,
-            'stok'        => $stok,
-            'deskripsi'   => $deskripsi,
-          );
-          $simpan = $this->all_model->update(array('produk_id'=>$produk_id),$data_update, 'produk');
-          if ($simpan) {
-            redirect('data_produk');
-          }
+      if (!$this->upload->do_upload('suratpermohonan')) {
+        $error = array('error' => $this->upload->display_errors());
+        print_r($error);
+      } else {
+        $data = array('upload_data' => $this->upload->data());
+        $filename = $data['upload_data']['file_name'];
+        $data_update = array(
+          'kategori_id' => $kategori,
+          'nama_produk' => $nama_produk,
+          'luastanah' => $luastanah,
+          'luasbangunan' => $luasbangunan,
+          'alamatp' => $alamatp,
+          'harga'       => $harga,
+          'stok'        => $stok,
+          'deskripsi'   => $deskripsi,
+        );
+        $simpan = $this->all_model->update(array('produk_id' => $produk_id), $data_update, 'produk');
+        if ($simpan) {
+          redirect('data_produk');
         }
-    }else {
-      $data_update = array( 
+      }
+    } else {
+      $data_update = array(
         'kategori_id' => $kategori,
         'nama_produk' => $nama_produk,
         'luastanah' => $luastanah,
-            'luasbangunan' => $luasbangunan,
-            'alamatp' => $alamatp,
+        'luasbangunan' => $luasbangunan,
+        'alamatp' => $alamatp,
         'harga'       => $harga,
         'stok'        => $stok,
         'deskripsi'   => $deskripsi,
       );
-      $simpan = $this->all_model->update(array('produk_id'=>$produk_id),$data_update, 'produk');
+      $simpan = $this->all_model->update(array('produk_id' => $produk_id), $data_update, 'produk');
       if ($simpan) {
         redirect('data_produk');
       }
@@ -77,74 +78,75 @@ $config['max_height']           = 768;
   }
 
   //
-  public function tambah_sewa() {
+  public function tambah_sewa()
+  {
     $produk_id    = $this->input->post('produk_id');
     $dari         = $this->input->post('dari');
     $sampai       = $this->input->post('sampai');
     $qty          = $this->input->post('qty');
     $nama         = $this->input->post('nama_produk');
     $harga        = $this->input->post('harga');
-     $suratpermohonan        = $this->input->post('suratpermohonan');
-        $suratpernyataan        = $this->input->post('suratpernyataan');
+    $suratpermohonan        = $this->input->post('suratpermohonan');
+    $suratpernyataan        = $this->input->post('suratpernyataan');
     $masasewa        = $this->input->post('masasewa');
     $bayar        = $this->input->post('bayar');
     $selisih      = $this->all_model->hitung_selisih($dari, $sampai);
     $tharga       = $harga * $masasewa;
     //
-        if (!empty($_FILES)) {
-      $config['upload_path']          = FCPATH.'/upload/berkas';
-$config['allowed_types']        = 'pdf|jpg|png';
-$config['max_size']             = 10000;
-//$config['max_width']            = 1024;
-//$config['max_height']           = 768;
+    if (!empty($_FILES)) {
+      $config['upload_path']          = FCPATH . '/upload';
+      $config['allowed_types']        = 'pdf|jpg|png';
+      $config['max_size']             = 10000;
+      //$config['max_width']            = 1024;
+      //$config['max_height']           = 768;
       $config['encrypt_name']         = true;
       $this->load->library('upload', $config);
-        if ( ! $this->upload->do_upload('suratpermohonan')) {
-          $error = array('error' => $this->upload->display_errors());
-          print_r($error);
-        } else {
-          $data = array('upload_data' => $this->upload->data());
-          $filename = $data['upload_data']['file_name'];
-         $datat = array(
+      if (!$this->upload->do_upload('suratpermohonan')) {
+        $error = array('error' => $this->upload->display_errors());
+        print_r($error);
+      } else {
+        $data = array('upload_data' => $this->upload->data());
+        $filename = $data['upload_data']['file_name'];
+        $datat = array(
+          'id'         => $dari,
+          'produk_id'  => $produk_id,
+          'qty'        => $qty,
+          'dari'       => $dari,
+          'sampai'     => $sampai,
+          'price'      => $tharga,
+          'name'       => $nama,
+          'suratpermohonan' => $suratpermohonan,
+          'suratpernyataan' => $suratpernyataan,
+          'masasewa' => $masasewa,
+          'bayar' => $bayar,
+        );
+        $in = $this->cart->insert($datat);
+        if ($in) {
+          redirect('sewa');
+        }
+      }
+    } else {
+
+      $datat = array(
         'id'         => $dari,
         'produk_id'  => $produk_id,
         'qty'        => $qty,
         'dari'       => $dari,
         'sampai'     => $sampai,
-        'price'      => $tharga,
-        'name'       => $nama,
         'suratpermohonan' => $suratpermohonan,
-        'suratpernyataan' => $suratpernyataan,
-        'masasewa' => $masasewa,
-        'bayar' => $bayar,         
-         );
-           $in = $this->cart->insert($datat);
-    if ($in) {
-      redirect('sewa');
-    }
-  }
-    }else {
-      
-       $datat = array(
-        'id'         => $dari,
-        'produk_id'  => $produk_id,
-        'qty'        => $qty,
-        'dari'       => $dari,
-        'sampai'     => $sampai,
-         'suratpermohonan' => $suratpermohonan,
         'suratpernyataan' => $suratpernyataan,
         'price'      => $tharga,
         'name'       => $nama,
         'masasewa' => $masasewa,
         'bayar' => $bayar,
 
-    );
-    $in = $this->cart->insert($datat);
-    if ($in) {
-      redirect('sewa');
+      );
+      $in = $this->cart->insert($datat);
+      if ($in) {
+        redirect('sewa');
+      }
     }
   }
-   }
   public function hapus($id)   {
     $in = $this->cart->remove($id);
     if ($in) {
